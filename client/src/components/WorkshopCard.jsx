@@ -38,43 +38,6 @@ const WorkshopCard = ({ workshop }) => {
     }
   }, [userId, workshop.favourited]);
 
-  /*
-  useEffect(()=>{
-    const fetchWorkshopData = async() => {
-      try{
-        //Get the token from localStorage or from wherever it's stored
-        const token = localStorage.getItem("JomMakanUser");
-        if (!token) {
-          alert("User is not authenticated.");
-          return;
-        }
-        
-        //Set the request headers with the token
-        //const config = token? { headers: {Authorization: token }} :{};
-      
-        const { data } = await axios.get(`http://localhost:3001/api/workshop/${_id}`, { headers: { Authorization: token } });
-        
-        // Log the retrieved data for debugging
-        console.log(data.workshop);
-        console.log(data.isSaved);
-
-        //Update state with the retrieved workshop data
-        setWorkshop(data.workshop);
-
-        //If isSaved is defined in the response, update the state
-        if(data.isSaved !== undefined){
-          setIsSaved(data.isSaved);
-        }
-      } catch (error){
-        console.error("Error fetching workshop or isSaved status:", error);
-      }
-    };
-
-    //Call the fetchWorkshopData function when the component mounts or when _id changes
-    fetchWorkshopData();
-  }, [_id]); //Dependency array
-*/
-
   useEffect(() => {
     // Add console logs to debug
     //console.log("Workshop Data:", workshop);
@@ -121,7 +84,7 @@ const WorkshopCard = ({ workshop }) => {
           window.location.reload();
         }
       } else {
-        // If the restaurant is not saved, perform save action
+        // If the workshop is not saved, perform save action
         await axios.post(
           `http://localhost:3001/api/workshop/${workshop._id}/addFavWorkshop`,
           {
