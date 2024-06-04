@@ -6,14 +6,7 @@ const mongoose = require("mongoose");
 
 const workshops = async (req, res) => {
   try {
-    // Get the current date
-    //const currentDate = new Date();
-    
-    // Find workshops with dates greater than the current date
-   // const upcomingWorkshops = await Workshop.find({ date: { $gt: currentDate } });
    const upcomingWorkshops = await Workshop.find();
-
-
     res.json(upcomingWorkshops);
   } catch (error) {
     console.error("Error fetching workshops: ", error);
@@ -77,7 +70,7 @@ const saveWorkshop = async (req, res) => {
     const userId = token.user._id; // Get the userId from the decoded token
     console.log(userId)
 
-    // Create a new favourite restaurant to db
+    // Create a new favourite workshop to db
     const newFavWorkshop = new favWorkshop({
       workshopName,
       workshopDescription,
@@ -95,7 +88,7 @@ const saveWorkshop = async (req, res) => {
     const workshop = await Workshop.findById(workshop_id);
     console.log(workshop)
     if (workshop) {
-      workshop.favourited.push(userId); // Set the registered status to true 
+      workshop.favourited.push(userId); // Set the favourited status to true 
       await workshop.save(); // Save the updated workshop
     }
 
@@ -106,8 +99,6 @@ const saveWorkshop = async (req, res) => {
   }
 };
 
-//favworkshops
-//({ favourited: { $in: [userId.toString()] } })
 // Get fav workshop
 const myFavouriteWorkshop = async (req, res) => {
   try {
@@ -139,7 +130,7 @@ const deleteFavWorkshop = async (req, res) => {
       return res.status(404).json({ message: "Favorite workshop not found" });
     }
 
-         // Find the workshop by ID and update the available slots
+         // Find the workshop by ID and update the favourited array
          const workshop = await Workshop.findById(deleted.workshop_id);
          console.log(workshop);
          if (workshop) {
