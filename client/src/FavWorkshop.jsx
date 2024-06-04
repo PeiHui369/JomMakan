@@ -36,37 +36,6 @@ const FavWorkshop = () => {
       });
   }, []); // Empty dependency array to fetch data only once when component mounts
 
-  // useEffect(() => {
-  //   const fetchWorkshops = async () => {
-  //     if (!token) {
-  //       console.error("No authorization token found");
-  //       return;
-  //     }
-
-  //     try {
-  //       console.log("Making request with token:", token);
-  //       const response = await axios.get("http://localhost:3001/api/workshop/favworkshops", {
-  //         headers: {
-  //           Authorization: token, 
-  //         },
-  //       });
-
-  //       console.log("Received response:", response.data);
-  //       setWorkshops(response.data);
-  //     } catch (error) {
-  //       if (error.response && error.response.status === 401) {
-  //         console.error("Unauthorized: Token might be invalid or expired");
-  //         // Optionally, handle token expiration (e.g., redirect to login)
-  //       } else {
-  //         console.error("Error fetching workshops:", error);
-  //       }
-  //     }
-  //   };
-
-  //   fetchWorkshops();
-  // }, [token]);
-
-
   // Filter workshops by user ID and search query
   const filteredWorkshops = favWorkshops.filter((workshop) => {
     const { workshopName, workshopDescription } = workshop;
