@@ -131,6 +131,7 @@ const ReservationForm = (props) => {
           console.error("Error fetching reservations:", error);
         });
     }
+    generateTableOptions();
   }, [dateinput]);
 
   const parseTime = (timeString) => {
@@ -262,26 +263,21 @@ const ReservationForm = (props) => {
       )),
     ];
   };
+  const timeToMinutes = ({ hours, minutes }) => hours * 60 + minutes;
 
   // Function to check if a given time slot clashes with any existing reservation
-  const isTimeSlotClashing = (reservation, timestartinput, timeendinput) => {
-    // console.log("reservation timestart", reservation.timestart);
-    // console.log("reservation timeend", reservation.timeend);
-    // console.log("selected timestart", timestartinput);
-    // console.log("selected timeend", timeendinput);
-    const reservationStartTime = parseTime(reservation.timestart);
-    const reservationEndTime = parseTime(reservation.timeend);
-    const selectedStartTime = parseTime(timestartinput);
-    const selectedEndTime = parseTime(timeendinput);
+  const isTimeSlotClashing = (reservation, timestartinput, timeendinput, dateinput) => {
+    const reservationStartTime = timeToMinutes(
+      parseTime(reservation.timestart)
+    );
+    const reservationEndTime = timeToMinutes(parseTime(reservation.timeend));
+    const selectedStartTime = timeToMinutes(parseTime(timestartinput));
+    const selectedEndTime = timeToMinutes(parseTime(timeendinput));
 
-    // Check if the selected time slot overlaps with the reservation's time slot
     if (
-      (selectedStartTime >= reservationStartTime &&
-        selectedStartTime < reservationEndTime) ||
-      (selectedEndTime > reservationStartTime &&
-        selectedEndTime <= reservationEndTime) ||
-      (selectedStartTime <= reservationStartTime &&
-        selectedEndTime >= reservationEndTime)
+      selectedStartTime === reservationStartTime ||
+      selectedStartTime === reservationStartTime + 30 ||
+      selectedStartTime === reservationStartTime - 30
     ) {
       return true; // Clashing time slot found
     }
@@ -364,7 +360,7 @@ const ReservationForm = (props) => {
     }
     if (!isChecked) {
       alert(
-        "Please check the box to indicate that you have read and understood the Registration Policy."
+        "Please check the box to indicate that you have read and understood the Reservation Policy."
       );
       return; // Stop further execution if isChecked is false
     }

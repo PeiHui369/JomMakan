@@ -30,14 +30,14 @@ const RegistrationForm = (props) => {
         break;
       case "paxinput":
         if (props.available < value) {
-          alert(`We do not have enough slots for ${value}. Please reduce the number of pax or choose another workshop.\nCurrent available slots: ${props.available}`);
-          setPaxInput(''); // Clear the pax input field
-        } 
-        else if(value < 0){
-          alert(`Please enter a valid pax number.`);
-          setPaxInput(''); // Clear the pax input field
-        }
-        else {
+          alert(
+            `We do not have enough slots for ${value}. Please reduce the number of pax or choose another workshop.\nCurrent available slots: ${props.available}`
+          );
+          setPaxInput(""); // Clear the pax input field
+        } else if (value <= 0) {
+          alert(`You have entered ${value}. Please enter valid number > 0.`);
+          setPaxInput(""); // Clear the pax input field
+        } else {
           setPaxInput(value);
         }
         break;
@@ -94,10 +94,10 @@ const RegistrationForm = (props) => {
     setIsChecked(!isChecked);
   };
 
-const isValidName = (nameinput) => {
-  const namePattern = /^[A-Za-z\s]+$/; // alphabets and spaces only
-  return namePattern.test(nameinput); // test if nameinput follows the pattern
-};
+  const isValidName = (nameinput) => {
+    const namePattern = /^[A-Za-z\s]+$/; // alphabets and spaces only
+    return namePattern.test(nameinput); // test if nameinput follows the pattern
+  };
 
   const isValidPhoneNumber = (phoneinput) => {
     const mobilePattern = /^01\d{8,9}$/; // Start with 01 and 10 or 11 in length only
@@ -126,49 +126,48 @@ const isValidName = (nameinput) => {
       return; // Stop further execution if isChecked is false
     }
 
-  const token = localStorage.getItem("JomMakanUser"); // Get JWT from localStorage
-  //const { token } = useAuth();
-  if (!token) {
-    alert("User is not authenticated."); // Handle case where user is not authenticated
-    return;
-  }
-  axios
-    .post(
-      "http://localhost:3001/api/registration/new_registration",
-      {
-        name: nameinput,
-        phone: phoneinput,
-        pax: paxinput,
-        status: "U",
-        workshop_id: workshopId,
-      },
-      {
-        headers: {
-          Authorization: token, // Include JWT in request headers
+    const token = localStorage.getItem("JomMakanUser"); // Get JWT from localStorage
+    //const { token } = useAuth();
+    if (!token) {
+      alert("User is not authenticated."); // Handle case where user is not authenticated
+      return;
+    }
+    axios
+      .post(
+        "http://localhost:3001/api/registration/new_registration",
+        {
+          name: nameinput,
+          phone: phoneinput,
+          pax: paxinput,
+          status: "U",
+          workshop_id: workshopId,
         },
-      }
-    )
-    .then(() => {
-      // alert("Registered Successfully");
-      setNameInput("");
-      setPhoneInput("");
-      setPaxInput("");
-      setConfirm(true);
-      setSubmit(false);
-      //window.location.reload(); // reload window after reserve successfully
-    })
-    .catch((error) => {
-      alert("Unable to register user");
-    });
-};
+        {
+          headers: {
+            Authorization: token, // Include JWT in request headers
+          },
+        }
+      )
+      .then(() => {
+        // alert("Registered Successfully");
+        setNameInput("");
+        setPhoneInput("");
+        setPaxInput("");
+        setConfirm(true);
+        setSubmit(false);
+        //window.location.reload(); // reload window after reserve successfully
+      })
+      .catch((error) => {
+        alert("Unable to register user");
+      });
+  };
 
   const handleClickOutside = (event) => {
     if (popRef.current && !popRef.current.contains(event.target)) {
-        setConfirm(false);
+      setConfirm(false);
       setSubmit(false);
-      navigate(-1);// Navigate up one level in the URL hierarchy
+      navigate(-1); // Navigate up one level in the URL hierarchy
       //window.location.reload(); // reload window after reserve successfully
-      
     }
   };
   useEffect(() => {
@@ -222,17 +221,20 @@ const isValidName = (nameinput) => {
         <div>
           No of pax:
           <br />
-          <input id="Rinput" type="number" required
-          name="paxinput"
-          value={paxinput}
-          onChange={(e) => {
-            handleInputChange(e);
-            // handleDateChange(e);
-          }}
-           onFocus={(e) => (e.target.placeholder = "")}
-           onBlur={(e) => (e.target.placeholder = "Enter number of pax")}
-           placeholder="Enter the number of pax"
-            ></input>
+          <input
+            id="Rinput"
+            type="number"
+            required
+            name="paxinput"
+            value={paxinput}
+            onChange={(e) => {
+              handleInputChange(e);
+              // handleDateChange(e);
+            }}
+            onFocus={(e) => (e.target.placeholder = "")}
+            onBlur={(e) => (e.target.placeholder = "Enter number of pax")}
+            placeholder="Enter the number of pax"
+          ></input>
         </div>
         <div id="Check">
           <label id="Rtext">

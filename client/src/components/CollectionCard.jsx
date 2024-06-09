@@ -128,7 +128,6 @@ const CollectionCard = ({ registrations, reservations }) => {
       );
       setTableName(matchedTable.name); // Set table name
     }
-    console.log("wut");
   }, [reservations, restaurantData]);
 
   //Format time slot

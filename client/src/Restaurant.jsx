@@ -435,9 +435,14 @@ const Restaurant = () => {
       <div className="container">
         <br />
         <div className="d-flex justify-content-between align-items-center">
-          <Link to={`/home`} className="back-btn">
+          {/* <Link to={`/home`} className="back-btn"> */}
+          <div
+          className="back-btn"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate(-1)}
+          >
             <i className="bi bi-arrow-left-circle"></i> Back
-          </Link>
+          </div>
           <div className="ml-auto">
             <small className="back-btn" onClick={handleSaveToggle}>
               <i
